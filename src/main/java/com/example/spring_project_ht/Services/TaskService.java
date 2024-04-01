@@ -1,17 +1,16 @@
 package com.example.spring_project_ht.Services;
 
 import com.example.spring_project_ht.Models.Task;
-import com.example.spring_project_ht.Models.User;
+
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
+
+
     private Map<Integer, Task> tasks = new HashMap<>();
 
     private UserService userService;
@@ -19,7 +18,9 @@ public class TaskService {
     public TaskService(UserService userService) {
         this.userService = userService;
     }
-
+    public Task getTaskById(int id) {
+        return tasks.get(id);
+    }
     public String createTask(Task task) {
         if (!tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
@@ -28,21 +29,20 @@ public class TaskService {
             return "Task with ID " + task.getId() + " already exists.";
         }
     }
-    public String setUserTask(int idUser,int idTask) {
-        if (userService.getUsers().containsKey(idUser)) {
-            User user = userService.getUsers().get(idUser);
-            if (tasks.containsKey(idTask)) {
-                user.setTasks(tasks.get(idTask));
-                return "Task with ID " + idTask + " set for user with ID " + idUser + " successfully.";
-            } else {
-                return "There is no such task with ID " + idTask;
-            }
-        } else {
-            return "There is no such user with ID " + idUser;
+    public List<Task> getUserTasks(int idUser) {
+        List<Task> tasks = new ArrayList<>();
+
+        for (int idTask : userService.getUserTasks(idUser)) {
+            tasks.add(getTaskById(idTask));
         }
+        return tasks;
+    }
+    public String setUserTask(int idUser, int idTask) {
+        userService.getUserDao().updateIdTask(idTask, idUser);
+        return "Task with ID " + idTask + " set for user with ID " + idUser + " successfully.";
     }
 
-    public String changeStatus(int idTask,Task.Status status) {
+    public String changeStatus(int idTask, Task.Status status) {
         if (tasks.containsKey(idTask)) {
             tasks.get(idTask).setStatus(status);
             return "Status of task with ID " + idTask + " changed successfully.";
@@ -50,6 +50,7 @@ public class TaskService {
             return "There is no such task with ID " + idTask;
         }
     }
+
     public List<Task> filterTasksByStatus(int idUser) {
         return filterTasks(idUser, Comparator.comparing(Task::getStatus));
     }
@@ -63,7 +64,7 @@ public class TaskService {
     }
 
     private List<Task> filterTasks(int idUser, Comparator<Task> comparator) {
-        List<Task> userTasks = userService.getUserTasks(idUser);
+        List<Task> userTasks = getUserTasks(idUser);
         if (userTasks != null) {
             return userTasks.stream()
                     .sorted(comparator)
@@ -73,22 +74,22 @@ public class TaskService {
         }
     }
 
-    public List<Task> searchTasksByStatus(int idUser,Task.Status status) {
-        List<Task> userTasks = userService.getUserTasks(idUser);
+    public List<Task> searchTasksByStatus(int idUser, Task.Status status) {
+        List<Task> userTasks = getUserTasks(idUser);
         return userTasks.stream()
                 .filter(task -> task.getStatus() == status)
                 .collect(Collectors.toList());
     }
 
-    public List<Task> searchTasksByPriority(int idUser,Task.Priority priority) {
-        List<Task> userTasks = userService.getUserTasks(idUser);
+    public List<Task> searchTasksByPriority(int idUser, Task.Priority priority) {
+        List<Task> userTasks = getUserTasks(idUser);
         return userTasks.stream()
                 .filter(task -> task.getPriority() == priority)
                 .collect(Collectors.toList());
     }
 
     public List<Task> searchTasksByDeadline(int idUser, String deadline) {
-        List<Task> userTasks = userService.getUserTasks(idUser);
+        List<Task> userTasks = getUserTasks(idUser);
         return userTasks.stream()
                 .filter(task -> task.getDeadline().equals(deadline))
                 .collect(Collectors.toList());

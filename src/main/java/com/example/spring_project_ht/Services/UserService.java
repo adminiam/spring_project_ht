@@ -1,45 +1,40 @@
 package com.example.spring_project_ht.Services;
 
-import com.example.spring_project_ht.Models.Task;
 import com.example.spring_project_ht.Models.User;
+import com.example.spring_project_ht.DAO.UserDao;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserService {
+    private UserDao userDao;
 
-    private Map<Integer, User> users = new HashMap<>();
+    public UserService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     public String addUser(User user) {
-        if (!users.containsKey(user.getId())) {
-            users.put(user.getId(), user);
-            return new UserResponse("User with ID " + user.getId() + " added successfully.").getMessage();
-        } else {
-            return new UserResponse("User with ID " + user.getId() + " already exists.").getMessage();
-        }
+        userDao.addUser(user.getId(), user);
+        return new UserResponse("User with ID " + user.getId() + " added successfully.").getMessage();
     }
 
     public String removeUser(int id) {
-        if (users.containsKey(id)) {
-            users.remove(id);
-            return "User with ID " + id + " removed successfully.";
-        } else {
-            return "User with ID " + id + " not found.";
-        }
+        userDao.removeUser(id);
+        return "User with ID " + id + " removed successfully.";
+
     }
 
-    public Map<Integer, User> getUsers() {
-        return users;
+    public List<Integer> getUserTasks(int idUser) {
+        return userDao.getUserTasks(idUser);
     }
 
-    public List<Task> getUserTasks(int idUser) {
-        if (users.get(idUser) != null)
-            return users.get(idUser).getTasks();
-        else return Collections.emptyList();
+    public UserDao getUserDao() {
+        return userDao;
+    }
+
+    public List<User> getUsers() {
+        return userDao.getAllUsers();
     }
 
     private static class UserResponse {
