@@ -1,58 +1,38 @@
 package com.example.spring_project_ht.Models;
 
-import java.util.ArrayList;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.List;
 
-public class User {
-    private int id;
-    private String name;
 
-    private List<Task> tasks = new ArrayList<>();
+@NoArgsConstructor
+@Entity
+@Getter
+@Setter
+@Table(name = "users")
+public class User {
+    @Id
+    @Column(name = "id_user")
+    private int idUser;
+    @Column(name = "user_name")
+    private String name;
+    @ManyToMany
+    private List<Task> tasks;
+
 
     public User(int id, String name) {
-        this.id = id;
+        this.idUser = id;
         this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setTasks(Task task) {
-        tasks.add(task);
-    }
-
-    public void checkTaskStatus(int idTask) {
-        for (Task task : tasks) {
-            if (task.getId() == idTask) {
-                System.out.println(task);
-                System.out.print("\n");
-                break;
-            }
-        }
-    }
-
-    public void checkAllTasksStatus() {
-        for (Task task : tasks) {
-            System.out.println(task);
-        }
-        System.out.print("\n");
-    }
-
-    public List<Task> getTasks() {
-        return tasks;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "idUser=" + idUser +
                 ", name='" + name + '\'' +
-                ", tasks=" + tasks +
                 '}';
     }
 }
