@@ -1,15 +1,17 @@
 package com.example.spring_project_ht.DAO;
 
 import com.example.spring_project_ht.Models.User;
-import org.springframework.stereotype.Repository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Repository
-public class UserDao {
+@Component
+@ConditionalOnProperty(name = "application.component", havingValue = "JDBC")
+public class UserDao implements DBConectivity {
 
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/taskManagement";
     private static final String JDBC_USER = System.getenv("login");
@@ -90,6 +92,7 @@ public class UserDao {
         }
     }
 
+    @Override
     public User getUserById(int id) {
         User user;
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);

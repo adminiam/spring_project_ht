@@ -1,6 +1,5 @@
 package com.example.spring_project_ht.Services;
 
-import com.example.spring_project_ht.DAO.UserDaoJPA;
 import com.example.spring_project_ht.Models.User;
 import com.example.spring_project_ht.DAO.UserDao;
 import lombok.Getter;
@@ -12,12 +11,10 @@ import java.util.*;
 @Service
 @Getter
 public class UserService {
-    private UserDao userDao;
-    private UserDaoJPA userDaoJPA;
+    private final UserDao userDao;
 
-    public UserService(UserDao userDao, UserDaoJPA userDaoJPA) {
+    public UserService(UserDao userDao) {
         this.userDao = userDao;
-        this.userDaoJPA = userDaoJPA;
     }
 
     public String addUser(User user) {
@@ -40,12 +37,6 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
-    public User getUserById(int id) {
-        return userDao.getUserById(id);
-    }
-    public User getUserByIdJpa(int id) {
-        return userDaoJPA.getUserByIdUser(id);
-    }
 @Getter
 @Setter
     private static class UserResponse {
