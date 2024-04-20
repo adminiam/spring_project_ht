@@ -2,24 +2,21 @@ package com.example.spring_project_ht.Services;
 
 import com.example.spring_project_ht.Models.User;
 import com.example.spring_project_ht.DAO.UserDao;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-@Getter
 public class UserService {
-    private final UserDao userDao;
+    private UserDao userDao;
 
     public UserService(UserDao userDao) {
         this.userDao = userDao;
     }
 
     public String addUser(User user) {
-        userDao.addUser(user.getIdUser(), user);
-        return new UserResponse("User with ID " + user.getIdUser() + " added successfully.").getMessage();
+        userDao.addUser(user.getId(), user);
+        return new UserResponse("User with ID " + user.getId() + " added successfully.").getMessage();
     }
 
     public String removeUser(int id) {
@@ -32,16 +29,26 @@ public class UserService {
         return userDao.getUserTasks(idUser);
     }
 
+    public UserDao getUserDao() {
+        return userDao;
+    }
 
     public List<User> getUsers() {
         return userDao.getAllUsers();
     }
 
-@Getter
-@Setter
     private static class UserResponse {
         private String message;
+
         public UserResponse(String message) {
+            this.message = message;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
             this.message = message;
         }
     }
