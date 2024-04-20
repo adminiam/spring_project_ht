@@ -18,9 +18,11 @@ public class TaskService {
     public TaskService(UserService userService) {
         this.userService = userService;
     }
+
     public Task getTaskById(int id) {
         return tasks.get(id);
     }
+
     public String createTask(Task task) {
         if (!tasks.containsKey(task.getId())) {
             tasks.put(task.getId(), task);
@@ -29,6 +31,7 @@ public class TaskService {
             return "Task with ID " + task.getId() + " already exists.";
         }
     }
+
     public List<Task> getUserTasks(int idUser) {
         List<Task> tasks = new ArrayList<>();
 
@@ -37,6 +40,7 @@ public class TaskService {
         }
         return tasks;
     }
+
     public String setUserTask(int idUser, int idTask) {
         userService.getUserDao().updateIdTask(idTask, idUser);
         return "Task with ID " + idTask + " set for user with ID " + idUser + " successfully.";

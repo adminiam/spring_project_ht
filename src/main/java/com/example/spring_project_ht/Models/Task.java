@@ -1,6 +1,21 @@
 package com.example.spring_project_ht.Models;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@Table(name = "tasks")
 public class Task {
+    @Id
+    @Column(name = "id_task")
     private int id;
     private String name;
     private String description;
@@ -8,45 +23,9 @@ public class Task {
     private Priority priority;
     private Status status = Status.New;
 
-    public Task(Integer id, String name, String description, String deadline, Priority priority) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.deadline = deadline;
-        this.priority = priority;
-    }
-
     public enum Priority {High, Medium, Low}
 
     public enum Status {New, InProcess, Finished, Scheduled}
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Priority getPriority() {
-        return priority;
-    }
-
-    public String getDeadline() {
-        return deadline;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
 
     @Override
     public String toString() {
