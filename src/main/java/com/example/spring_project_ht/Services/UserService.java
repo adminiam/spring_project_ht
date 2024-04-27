@@ -1,7 +1,7 @@
 package com.example.spring_project_ht.Services;
 
 import com.example.spring_project_ht.Models.User;
-import com.example.spring_project_ht.DAO.UserDao;
+import com.example.spring_project_ht.Dao.UserDao;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;

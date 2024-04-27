@@ -1,6 +1,6 @@
 package com.example.spring_project_ht.Services;
 
-import com.example.spring_project_ht.DAO.DBConectivity;
+import com.example.spring_project_ht.Dao.DBConectivity;
 import com.example.spring_project_ht.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
