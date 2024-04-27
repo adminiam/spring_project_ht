@@ -37,8 +37,8 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
-@Getter
-@Setter
+    @Getter
+    @Setter
     private static class UserResponse {
         private String message;
         public UserResponse(String message) {

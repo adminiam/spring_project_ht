@@ -1,5 +1,6 @@
 package com.example.spring_project_ht.Dao;
 
+
 import com.example.spring_project_ht.Models.User;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
