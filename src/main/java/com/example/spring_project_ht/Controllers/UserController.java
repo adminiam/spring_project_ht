@@ -39,4 +39,8 @@ public class UserController {
     public User getUserById(@PathVariable int id) {
         return userServiceDataBases.getUserById(id);
     }
+    @GetMapping("/testError")
+    public void testError() {
+        throw new RuntimeException("Test error occurred!");
+    }
 }
