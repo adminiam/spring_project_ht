@@ -37,10 +37,15 @@ public class UserService {
         return userDao.getAllUsers();
     }
 
+    public void addUserException(String exception) {
+        userDao.addUserException(exception);
+    }
+
     @Getter
     @Setter
     private static class UserResponse {
         private String message;
+
         public UserResponse(String message) {
             this.message = message;
         }

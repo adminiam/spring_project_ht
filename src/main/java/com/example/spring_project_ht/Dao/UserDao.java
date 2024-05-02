@@ -24,6 +24,7 @@ public class UserDao implements DBConectivity {
     private static final String GET_TASK_QUERY = "SELECT idTask FROM users WHERE id_user = ?";
     private static final String CHANGE_TASK_QUERY = "UPDATE users SET idTask = ? WHERE id_user = ?";
     private static final String GET_USER_BY_ID_QUERY = "SELECT * FROM users WHERE id_user = ?";
+    private static final String INSERT_USER_EXCEPTION_QUERY = "INSERT INTO user_exceptions (name_exception) VALUES (?)";
 
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
@@ -92,9 +93,20 @@ public class UserDao implements DBConectivity {
             e.printStackTrace();
         }
     }
-
+    public void addUserException(String exception) {
+        try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_EXCEPTION_QUERY)) {
+            preparedStatement.setString(1,exception);
+            preparedStatement.executeUpdate();
+        } catch (SQLIntegrityConstraintViolationException e) {
+            System.err.println("This exception is already exists");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public User getUserById(int id) {
+
         User user;
         try (Connection connection = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_ID_QUERY)) {
